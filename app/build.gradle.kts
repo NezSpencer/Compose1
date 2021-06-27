@@ -2,11 +2,11 @@ import com.nezspencer.compose1.Dependencies
 import com.nezspencer.compose1.androidTestImplementation
 import com.nezspencer.compose1.implementation
 import com.nezspencer.compose1.testImplementation
+import kotlin.collections.*
 
 plugins {
     id("com.android.application")
     id("kotlin-android")
-    id("kotlin-android-extensions")
 }
 
 android {
@@ -40,9 +40,16 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = Dependencies.Compose.version
+    }
+
+    packagingOptions {
+        this.resources.excludes.add("META-INF/licenses/**")
+        this.resources.excludes.add("META-INF/AL2.0")
+        this.resources.excludes.add("META-INF/LGPL2.1")
     }
 }
 
