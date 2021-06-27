@@ -18,6 +18,11 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        if (com.nezspencer.compose1.Dependencies.Accompanist.version.endsWith("SNAPSHOT")) {
+            maven {
+                this.artifactUrls("https://oss.sonatype.org/content/repositories/snapshots/")
+            }
+        }
 
     }
 }
