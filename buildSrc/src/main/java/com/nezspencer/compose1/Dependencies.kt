@@ -35,7 +35,7 @@ object Dependencies {
     object Coroutines {
         private const val version = "1.4.2"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:$version"
-        const val android = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
+        const val kotlinxAndroid = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$version"
         const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:$version"
     }
 
@@ -46,6 +46,7 @@ object Dependencies {
 
         const val junit = "junit:junit:$junitVersion"
         const val mockitoCore = "org.mockito:mockito-core:$mockitoVersion"
+        const val roomTestHelper = "androidx.room:room-testing:${AndroidX.roomVersion}"
 
         //UI/integration tests
         const val androidCore = "androidx.test:core:$androidTestVersion"
@@ -56,11 +57,22 @@ object Dependencies {
     }
 
     object AndroidX {
+        const val roomVersion = "2.3.0"
+        const val hiltVersion = "2.38.1"
         const val coreKtx = "androidx.core:core-ktx:1.6.0-beta02"
         const val composeNavigation = "androidx.navigation:navigation-compose:2.4.0-alpha03"
         const val material = "com.google.android.material:material:1.3.0"
         const val appCompat = "androidx.appcompat:appcompat:1.3.0"
         const val lifecycle = "androidx.lifecycle:lifecycle-runtime-ktx:2.3.1"
+        const val roomRuntime = "androidx.room:room-runtime:$roomVersion"
+        const val roomKtx = "androidx.room:room-ktx:$roomVersion"
+        const val roomKsp = "androidx.room:room-compiler:$roomVersion"
+
+        const val hiltClassPath = "com.google.dagger:hilt-android-gradle-plugin:$hiltVersion"
+        const val hilt = "com.google.dagger:hilt-android:$hiltVersion"
+        const val hiltKsp = "com.google.dagger:hilt-android-compiler:$hiltVersion"
+
+        const val sqlJdbcKapt = "org.xerial:sqlite-jdbc:3.34.0"
     }
 
     val mainLibs = listOf(
@@ -70,7 +82,7 @@ object Dependencies {
         Compose.ui,
         Compose.activity,
         Coroutines.core,
-        Coroutines.android,
+        Coroutines.kotlinxAndroid,
         AndroidX.coreKtx,
         AndroidX.composeNavigation,
         AndroidX.material,
@@ -78,12 +90,15 @@ object Dependencies {
         AndroidX.appCompat,
         AndroidX.lifecycle,
         Accompanist.insets,
-        Accompanist.paging
+        Accompanist.paging,
+        AndroidX.roomRuntime,
+        AndroidX.roomKtx
     )
 
     val testLibs = listOf(
         Tests.junit,
-        Tests.mockitoCore
+        Tests.mockitoCore,
+        Tests.roomTestHelper
     )
 
     val androidTestLibs = listOf(
@@ -93,6 +108,11 @@ object Dependencies {
         Tests.rules,
         Tests.androidCore
 
+    )
+
+    val kspLibs = listOf(
+        AndroidX.roomKsp,
+        AndroidX.sqlJdbcKapt
     )
 }
 

@@ -21,13 +21,13 @@ import com.google.accompanist.insets.statusBarsPadding
 import com.nezspencer.compose1.ui.theme.Purple700
 
 val dialogState = mutableStateOf(false)
-val homeItems = mutableListOf<String>()
+val homeItems = mutableListOf<Task>()
 
 @ExperimentalFoundationApi
 @Composable
 fun TodoApp(
     navController: NavHostController = rememberNavController(),
-    onNewTaskAdded: (String) -> Unit
+    onNewTaskAdded: (title: String, description: String) -> Unit
 ) {
     ProvideWindowInsets {
         Scaffold(
@@ -91,11 +91,11 @@ fun AppBar() {
 @Preview
 @Composable
 fun PreviewHomeScreen() {
-    TodoApp(rememberNavController(), {})
+    TodoApp(rememberNavController()){_, _ ->  }
 }
 
 @Preview
 @Composable
 fun PreviewTaskDialog() {
-    AddTaskDialog({}, {}, {})
+    AddTaskDialog({}, {}, {_, _ -> })
 }

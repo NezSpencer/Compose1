@@ -19,8 +19,8 @@ class MainActivity : ComponentActivity() {
             Compose1Theme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    TodoApp {
-                        homeItems.add(it)
+                    TodoApp {title, description ->
+                        homeItems.add(Task(1, title, description))
                     }
                 }
             }

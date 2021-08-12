@@ -1,13 +1,12 @@
 package com.nezspencer.compose1
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import java.util.*
 
@@ -29,8 +28,7 @@ fun CalendarHeader(daysInWeek: List<String>) {
                 text = day,
                 modifier = Modifier
                     .padding(8.dp)
-                    .weight(1f)
-                    .background(color = Color.White),
+                    .weight(1f),
                 style = MaterialTheme.typography.body1
             )
             //Spacer(modifier = Modifier.width(1.dp).requiredHeight(IntrinsicSize.Max).background(color = Color.White))
@@ -52,7 +50,8 @@ fun CalendarBody() {
                     val text = if ((counter == 1 && dayOfWeek != i) || counter > numberOfDaysInMonth) "" else counter.toString()
                     Text(text = text, modifier = Modifier
                         .weight(1f)
-                        .align(Alignment.CenterVertically)
+                        .align(Alignment.CenterVertically),
+                        textAlign = TextAlign.Center
                     )
                     if (counter != 1 || dayOfWeek == i) {
                         counter++

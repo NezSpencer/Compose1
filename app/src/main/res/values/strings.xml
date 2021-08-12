@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Daily Todo Tracker</string>
+    <string name="label_title">Title</string>
+    <string name="title_add_task">Add Task</string>
+    <string name="prompt_empty_tasks_message">No tasks today.\nTap the pencil button to add a task</string>
 </resources>
