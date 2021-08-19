@@ -2,11 +2,12 @@ import com.nezspencer.compose1.Dependencies
 import com.nezspencer.compose1.androidTestImplementation
 import com.nezspencer.compose1.implementation
 import com.nezspencer.compose1.testImplementation
-import kotlin.collections.*
+import com.nezspencer.compose1.kapt
 
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -57,4 +58,5 @@ dependencies {
     implementation(Dependencies.mainLibs)
     testImplementation(Dependencies.testLibs)
     androidTestImplementation(Dependencies.androidTestLibs)
+    kapt(Dependencies.kspLibs)
 }

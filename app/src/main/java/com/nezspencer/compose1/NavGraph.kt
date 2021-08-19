@@ -14,7 +14,7 @@ import androidx.navigation.compose.composable
 fun NavGraph(
     navController: NavHostController,
     startDestination: AppDestination,
-    onNewTaskAdded: (String) -> Unit,
+    onNewTaskAdded: (title: String, description: String) -> Unit,
     modifier: Modifier
 ) {
     NavHost(navController = navController, startDestination = startDestination.route) {

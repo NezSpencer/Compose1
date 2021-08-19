@@ -14,6 +14,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -27,7 +29,7 @@ import androidx.navigation.NavHostController
 fun Dashboard(
     modifier: Modifier,
     navController: NavHostController,
-    onNewTaskAdded: (String) -> Unit
+    onNewTaskAdded: (title: String, description: String) -> Unit
 ) {
     if (dialogState.value) {
         AddTaskDialog(
@@ -38,7 +40,7 @@ fun Dashboard(
 
     if (homeItems.isEmpty()) {
         Text(
-            text = "No tasks today.\nTap the pencil button to add a task",
+            text = stringResource(id = R.string.prompt_empty_tasks_message),
             modifier = modifier
                 .padding(20.dp)
                 .fillMaxWidth()
@@ -53,14 +55,14 @@ fun Dashboard(
             modifier = modifier.fillMaxWidth()
         ) {
             items(homeItems) { item ->
-                HomeTaskCard(item = item, navController)
+                HomeTaskCard(task = item, navController)
             }
         }
     }
 }
 
 @Composable
-fun HomeTaskCard(item: String, navController: NavController) {
+fun HomeTaskCard(task: Task, navController: NavController) {
     Card(
         modifier = Modifier
             .height(200.dp)
@@ -68,12 +70,21 @@ fun HomeTaskCard(item: String, navController: NavController) {
             .padding(8.dp)
             .clickable { navController.navigate(AppDestination.DETAIL.route) }
     ) {
-        Text(
-            text = item,
-            style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier.wrapContentSize(align = Alignment.Center),
-            textAlign = TextAlign.Center
-        )
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text(
+                text = task.title,
+                style = MaterialTheme.typography.h6,
+                modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.height(8.dp).fillMaxWidth())
+            Text(
+                text = task.description,
+                style = MaterialTheme.typography.body1,
+                modifier = Modifier.wrapContentSize(align = Alignment.Center),
+                textAlign = TextAlign.Center
+            )
+        }
     }
 }
 
@@ -81,43 +92,60 @@ fun HomeTaskCard(item: String, navController: NavController) {
 fun AddTaskDialog(
     onClose: () -> Unit,
     onTextEdited: (String) -> Unit,
-    onSaveClicked: (String) -> Unit
+    onSaveClicked: (title: String, description: String) -> Unit
 ) {
     Dialog(onDismissRequest = {
 
         onClose()
         dialogState.value = false
     }, properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true)) {
-        val textState = remember { mutableStateOf(TextFieldValue()) }
+        val titleFieldState = remember { mutableStateOf(TextFieldValue()) }
+        val descriptionState = remember { mutableStateOf(TextFieldValue()) }
+        val buttonState = remember { mutableStateOf(false) }
         Surface(
             modifier = Modifier
-                .padding(20.dp)
+                .padding(10.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(8.dp)
         ) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    text = "Add Task",
+                    text = stringResource(id = R.string.title_add_task),
                     style = MaterialTheme.typography.subtitle1,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(5.dp),
+                    textAlign = TextAlign.Center,
+                    fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(40.dp))
+                Text(text = stringResource(id = R.string.label_title))
                 TextField(
-                    value = textState.value,
-                    onValueChange = { textFieldValue ->
-                        textState.value = textFieldValue
-                        onTextEdited(textFieldValue.text)
+                    value = titleFieldState.value,
+                    onValueChange = { state ->
+                        titleFieldState.value = state
+                        buttonState.value = state.text.isNotBlank() && descriptionState.value.text.isNotBlank()
                     },
                     modifier = Modifier.padding(8.dp)
                 )
-                Spacer(modifier = Modifier.height(20.dp))
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(text = "Description")
+                TextField(
+                    value = descriptionState.value,
+                    onValueChange = { state ->
+                        descriptionState.value = state
+                        buttonState.value = state.text.isNotBlank() && titleFieldState.value.text.isNotBlank()
+
+                    },
+                    singleLine = false
+                )
+                Spacer(modifier = Modifier.height(40.dp))
                 Button(onClick = {
-                    if (textState.value.text.isNotBlank()) {
-                        onSaveClicked(textState.value.text)
+                    if (titleFieldState.value.text.isNotBlank()) {
+                        onSaveClicked(titleFieldState.value.text, descriptionState.value.text)
                         dialogState.value = false
                     }
-                }) {
+                }, modifier = Modifier.padding(8.dp), enabled = buttonState.value) {
                     Text(
                         text = "Save",
                         modifier = Modifier.fillMaxWidth(),
